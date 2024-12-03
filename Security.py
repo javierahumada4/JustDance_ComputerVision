@@ -6,6 +6,7 @@ import imageio
 from typing import List
 import glob
 from calibrate import get_paths, load_images, write_image
+from detect_shapes import is_square
 
 def shi_tomasi_corner_detection(image: np.array, maxCorners: int, qualityLevel:float, minDistance: int, corner_color: tuple, radius: int):
     '''
@@ -50,16 +51,16 @@ def canny_line_detection(img, low_threshold, high_threshold):
 if __name__ == "__main__":
     path = dirname(getcwd())
     path_ = join(path, r"JustDance_ComputerVision-1")
-    paths = get_paths(path_, 3, "Patterns/test")
+    paths = get_paths(path_, 4, "Patterns/test")
     images = load_images(paths)
-    max_corners, quality, min_distance, corner_color, radius = 10, 0.3, 7, (255, 0, 255), 5
+    max_corners, quality, min_distance, corner_color, radius = 4, 0.3, 7, (255, 0, 255), 5
     shi_tomasi_corners = [shi_tomasi_corner_detection(img, max_corners, quality, min_distance, corner_color, radius)[1] for img in images]
     #for i, image in enumerate(shi_tomasi_corners):
     #    write_image(image, join(path_, f"Patterns/shi{i}.png"))
     low, high = 50, 120
     canny_images = [canny_line_detection(img, low, high) for img in images]
-    for i, image in enumerate(canny_images):
-        write_image(image, join(path_, f"Patterns/canny{i}.png"))
+    #for i, image in enumerate(canny_images):
+     #   write_image(image, join(path_, f"Patterns/canny{i}.png"))
     for i in range(len(canny_images)):
         shi_corner = shi_tomasi_corners[i]
         canny = canny_images[i]
@@ -68,4 +69,7 @@ if __name__ == "__main__":
             cv2.circle(canny, (x, y), radius, corner_color, -1)  # Draw filled circle
         write_image(canny, join(path_, f"Patterns/Total{i}.png"))
     
-    
+    for corner in shi_tomasi_corners:
+        print(corner)
+        tolerance = 50
+        print(is_square(corner))
