@@ -47,9 +47,12 @@ def get_extrinsics(rvecs, tvecs):
     return list(map(lambda rvec, tvec: np.hstack((cv2.Rodrigues(rvec)[0], tvec)), rvecs, tvecs))
 
 def calibration():
+    pass
+
+if __name__ == "__main__":
     path = dirname(getcwd())
-    path_ = join(path, r"JustDance_ComputerVision")
-    paths = get_paths(path_, 30, "calibration/chess")
+    path_ = join(path, r"JustDance_ComputerVision-1")
+    paths = get_paths(path_, 30, "Calibration/chess")
     images = load_images(paths)
     grid = (7, 7)
     valid_corners, valid_imgs = get_valid(images, grid)
@@ -68,6 +71,3 @@ def calibration():
     print("Intrinsics:\n", intrinsics)
     print("Distortion coefficients:\n", dist_coeffs)
     print("Root mean squared reprojection error:\n", rms)
-
-if __name__ == "__main__":
-    calibration()

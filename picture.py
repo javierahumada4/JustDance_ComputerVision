@@ -28,8 +28,8 @@ def write_image(img, path):
 if __name__ == "__main__":
     camera = format_camera()
     path = dirname(getcwd())
-    for i in range(30):
+    for i in range(1):
         picture = make_picture(camera)
-        path_ = join(path, f"JustDance_ComputerVision-1/chess{i}.png")
+        path_ = join(path, f"JustDance_ComputerVision-1/Patterns/test{i+1}.png")
         write_image(picture, path_)
     print("Making photos endeded")
