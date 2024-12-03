@@ -67,3 +67,5 @@ if __name__ == "__main__":
             x, y = corner.ravel()  # Flatten the coordinates
             cv2.circle(canny, (x, y), radius, corner_color, -1)  # Draw filled circle
         write_image(canny, join(path_, f"Patterns/Total{i}.png"))
+    
+    
