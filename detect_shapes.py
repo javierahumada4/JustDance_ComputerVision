@@ -1,4 +1,6 @@
+import numpy as np
 def sort_corners(corners):
+    corners = [corner[0] for corner in corners]
     # Calculate the centroid of the corners
     centroid = np.mean(corners, axis=0)
 
@@ -7,15 +9,15 @@ def sort_corners(corners):
         vector = np.array(point) - centroid
         return np.arctan2(vector[1], vector[0])  # Y-axis, X-axis
 
-    sorted_corners = sorted(corners, key=angle_from_centroid)
+    sorted_corners = sorted(corners, key=lambda x: angle_from_centroid(x))
     return sorted_corners
 
 def is_square(corners, tolerance=1e-2):
-    import numpy as np
-
     if len(corners) != 4:
         print("Not a square: Incorrect number of corners.")
         return False
+    
+    corners = sort_corners(corners)
 
     # Calculate edge lengths
     def calculate_distance(p1, p2):
@@ -63,7 +65,7 @@ def is_rectangle(corners, tolerance=1e-2):
     if len(corners) != 4:
         print("Not a rectangle: Incorrect number of corners.")
         return False
-
+    corners = sort_corners(corners)
     def calculate_distance(p1, p2):
         return np.linalg.norm(np.array(p1) - np.array(p2))
 
@@ -108,7 +110,7 @@ def is_triangle(corners, tolerance=1e-2):
     if len(corners) != 3:
         print("Not a triangle: Incorrect number of corners.")
         return False
-
+    corners = sort_corners(corners)
     def calculate_angle(a, b, c):
         ab = np.array(b) - np.array(a)
         ac = np.array(c) - np.array(a)

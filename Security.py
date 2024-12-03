@@ -6,8 +6,7 @@ import imageio
 from typing import List
 import glob
 from calibrate import get_paths, load_images, write_image
-from detect_shapes import is_square
-
+from detect_shapes import is_square, is_rectangle, is_triangle
 def shi_tomasi_corner_detection(image: np.array, maxCorners: int, qualityLevel:float, minDistance: int, corner_color: tuple, radius: int):
     '''
     image - Input image
@@ -53,7 +52,7 @@ if __name__ == "__main__":
     path_ = join(path, r"JustDance_ComputerVision-1")
     paths = get_paths(path_, 4, "Patterns/test")
     images = load_images(paths)
-    max_corners, quality, min_distance, corner_color, radius = 4, 0.3, 7, (255, 0, 255), 5
+    max_corners, quality, min_distance, corner_color, radius = 4, 0.5, 7, (255, 0, 255), 5
     shi_tomasi_corners = [shi_tomasi_corner_detection(img, max_corners, quality, min_distance, corner_color, radius)[1] for img in images]
     #for i, image in enumerate(shi_tomasi_corners):
     #    write_image(image, join(path_, f"Patterns/shi{i}.png"))
@@ -70,6 +69,8 @@ if __name__ == "__main__":
         write_image(canny, join(path_, f"Patterns/Total{i}.png"))
     
     for corner in shi_tomasi_corners:
-        print(corner)
+        print()
         tolerance = 50
-        print(is_square(corner))
+        print(is_square(corner, tolerance))
+        print(is_rectangle(corner, tolerance))
+        print(is_triangle(corner, tolerance))
