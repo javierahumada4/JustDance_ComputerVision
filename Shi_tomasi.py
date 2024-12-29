@@ -21,7 +21,7 @@ def shi_tomasi_corner_detection(image: np.array, maxCorners: int, qualityLevel:f
     corner_color - Desired color to highlight corners in the original image
     radius - Desired radius (pixels) of the circle
     '''
-    # TODO Input image to Tomasi corner detector should be grayscale 
+    # Input image to Tomasi corner detector should be grayscale 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     
     # Apply Shi-Tomasi corner detection

@@ -130,3 +130,11 @@ def is_triangle(corners, tolerance=1e-2):
 
     print("The shape is a triangle!")
     return True
+
+def is_circle(corners, tolerance = 1e-2):
+    # TODO
+    pass
+
+def is_empty(corners, tolerance = 1e-2):
+    # TODO
+    pass
