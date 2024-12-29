@@ -131,10 +131,53 @@ def is_triangle(corners, tolerance=1e-2):
     print("The shape is a triangle!")
     return True
 
-def is_circle(corners, tolerance = 1e-2):
-    # TODO
-    pass
+def is_circle(corners, tolerance=1e-2):
+    if len(corners) < 3:
+        print("Not a circle: Insufficient number of points.")
+        return False
 
-def is_empty(corners, tolerance = 1e-2):
-    # TODO
-    pass
+    # Calculate the centroid of the points
+    centroid = np.mean([corner[0] for corner in corners], axis=0)
+
+    # Calculate distances of all points from the centroid
+    distances = [np.linalg.norm(np.array(corner[0]) - centroid) for corner in corners]
+
+    # Check if all distances are approximately the same
+    if not all(abs(distances[0] - distance) < tolerance for distance in distances):
+        print("Not a circle: Points are not equidistant from the center.")
+        return False
+
+    print("The shape is a circle!")
+    return True
+
+def is_circle(corners, tolerance=1e-2):
+    if len(corners) < 3:
+        print("Not a circle: Insufficient number of points.")
+        return False
+
+    # Calculate the centroid of the points
+    centroid = np.mean([corner[0] for corner in corners], axis=0)
+
+    # Calculate distances of all points from the centroid
+    distances = [np.linalg.norm(np.array(corner[0]) - centroid) for corner in corners]
+
+    # Check if all distances are approximately the same
+    if not all(abs(distances[0] - distance) < tolerance for distance in distances):
+        print("Not a circle: Points are not equidistant from the center.")
+        return False
+
+    print("The shape is a circle!")
+    return True
+
+def is_empty(corners, tolerance=1e-2):
+    if not corners or len(corners) == 0:
+        print("The shape is empty!")
+        return True
+
+    # Check if all points are degenerate (e.g., all zeros or the same point)
+    if all(np.allclose(np.array(corner), 0, atol=tolerance) for corner in corners):
+        print("The shape is empty!")
+        return True
+
+    print("The shape is not empty.")
+    return False
