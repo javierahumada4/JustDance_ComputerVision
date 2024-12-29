@@ -6,8 +6,10 @@ class CaesarCypher:
         encoded = ""
         for character in message:
             encoded += chr(ord(character) + self.step)
+        return encoded
 
     def decode(self, message):
         decoded = ""
         for character in message:
             decoded += chr(ord(character) - self.step)
+        return decoded
