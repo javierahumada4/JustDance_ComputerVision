@@ -11,13 +11,17 @@ def get_pasword():
     valid = False
     while not valid:
         password = input("Insert password to create it (ex: t-s-c-t): ")
-        if len(password)%2 == 0 or len(password) > 1 and "-" not in password:
-            print("Invalid password.")
+        if len(password)%2 == 0:
+            print("Invalid password, the password has to have - in between the letters")
             continue
-        for i in password:
-            if i not in "t-sc":
-                print("Invalid password")
+        for i, letter in enumerate(password):
+            if letter not in "t-sc":
+                print("Invalid password, some of the letters weren't correct")
                 break
+            if letter == "-":
+                if password[i-1] not in "tsc" or password[i + 1] not in "tsc":
+                    print("Invalid password, the password has to have - in between the letters")
+                    break
         else:
             valid = True
     return password
