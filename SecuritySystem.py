@@ -13,8 +13,7 @@ def main():
     state_machine = SecurityStateMachine(password)
     while True:
         frame = camera.capture_array()
-        corners = shi_tomasi_corner_detection(frame, max_corners, quality, min_distance, corner_color, radius)
-        frame_corners = draw_corners(frame, corners, radius, corner_color)
+        frame_corners, corners = shi_tomasi_corner_detection(frame, max_corners, quality, min_distance, corner_color, radius)
         frame_result = state_machine.process_corners(corners)
         final_frame, result = draw_result(frame_corners, frame_result)
         cv2.imshow("picam", final_frame)
@@ -25,13 +24,6 @@ def main():
             break
         sleep(1//fps)
     cv2.destroyAllWindows()
-
-def draw_corners(frame, corners, radius, corner_color):
-    for corner in corners:
-        x, y = corner.ravel()  # Flatten the coordinates
-        cv2.circle(frame, (x, y), radius, corner_color, -1)  # Draw filled circle
-    return frame
-import cv2
 
 def draw_result(frame, result):
     """
