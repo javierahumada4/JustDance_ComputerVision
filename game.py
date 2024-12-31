@@ -3,8 +3,8 @@ from picamera2 import Picamera2
 
 def stream_video():
     # Define orange color range
-    light_orange = (1, 225, 140)
-    dark_orange = (20, 255, 255)
+    light_orange = (10, 25, 60)
+    dark_orange = (35, 180, 215)
 
     picam = Picamera2()
     picam.preview_configuration.main.size=(1280, 720)
