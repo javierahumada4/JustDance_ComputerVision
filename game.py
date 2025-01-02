@@ -57,8 +57,8 @@ def stream_video():
                 ideal_pos = ideal_positions[i]
                 distance = np.linalg.norm(np.array(detected_pos) - np.array(ideal_pos))
 
-                # Si la distancia entre la posición detectada y la ideal es pequeña, consideramos que la postura es correcta
-                if distance < 50:  # Ajusta este umbral según lo que consideres "cerca"
+                # Si la distancia entre la posición detectada y la ideal es pequeña, mostramos por pantalla que es correcto
+                if distance < 250: 
                     cv2.putText(frame, f"Mando {i+1}: Correcto", (10, 30 * (i+1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 else:
                     cv2.putText(frame, f"Mando {i+1}: Incorrecto", (10, 30 * (i+1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
