@@ -49,6 +49,11 @@ def stream_video():
             x1, y1, x2, y2 = box
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             
+        # Dibuja las posiciones ideales en la pantalla (usando círculos rojos)
+        for ideal_pos in ideal_positions:
+            cv2.circle(frame, ideal_pos, 10, (0, 0, 255), -1)  # Dibuja un círculo rojo en la posición ideal
+            cv2.putText(frame, f"Ideal", (ideal_pos[0] + 15, ideal_pos[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+            
         # Compara las posiciones detectadas con las posiciones ideales
         if len(new_positions) == 2:
             detected_positions = new_positions
