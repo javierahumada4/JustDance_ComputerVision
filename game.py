@@ -1,20 +1,20 @@
 import cv2
 from picamera2 import Picamera2
-
-# Función para inicializar un tracker para un nuevo objeto
-def initialize_tracker(frame, box):
-    tracker = cv2.TrackerCSRT_create()
-    tracker.init(frame, box)
-    return tracker
+import numpy as np
 
 def stream_video():
-    # Define orange color range
+    # Rango de colores de los "mandos"
     light_orange = (10, 25, 60)
     dark_orange = (35, 180, 215)
     
-    # Lista para almacenar trackers y cajas correspondientes
-    trackers = [None, None]
-    tracker_boxes = [None, None]
+    # Lista para almacenar las posiciones actuales de los mandos
+    detected_positions = [None, None]
+    
+    # Posición de ejemplo para demostrar el Just Dance
+    ideal_positions = [
+    (300, 200),  # Posición ideal para el mando 1
+    (600, 200),  # Posición ideal para el mando 2
+    ]
 
     # Inicializar la cámara
     picam = Picamera2()
@@ -32,48 +32,37 @@ def stream_video():
         # Compute a list that contains a mask (which should segment orange colors) for every image.
         img_mask = cv2.inRange(hsv_img, light_orange, dark_orange)
         # Compute a list that contains the result of multiplying the original image with its orange colors mask.
-        img_segmented = cv2.bitwise_and(frame, frame, mask=img_mask) # ESTA LINEA NO ES NECESARIA, PODEMOS USAR LA MASCARA DIRECTAMENTE PARA ENCONTRAR LOS CONTORNOS
+        # img_segmented = cv2.bitwise_and(frame, frame, mask=img_mask) # ESTA LINEA NO ES NECESARIA, PODEMOS USAR LA MASCARA DIRECTAMENTE PARA ENCONTRAR LOS CONTORNOS
         
         # Encuentra contornos en la máscara
         contours, _ = cv2.findContours(img_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        # Dibuja rectángulos alrededor de los objetos segmentados
         detected_boxes = []
+        new_positions = []
         for contour in contours:
             if cv2.contourArea(contour) > 5000:  # Filtra por área mínima
                 x, y, w, h = cv2.boundingRect(contour)
                 detected_boxes.append((x, y, x + w, y + h))
-        
-         # Actualiza los trackers existentes
-        for i in range(2):
-            if trackers[i] is not None:
-                success, box = trackers[i].update(frame)
-                if success:
-                    x, y, w, h = map(int, box)
-                    tracker_boxes[i] = (x, y, w, h)
-                    # Dibuja la caja actualizada
-                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                else:
-                    # Si el tracker falla, reinícialo
-                    trackers[i] = None
-                    tracker_boxes[i] = None
-
-        # Asigna nuevos trackers a objetos detectados no rastreados
+                new_positions.append((x + w // 2, y + h // 2))
+                
+        # Dibuja las cajas alrededor de los objetos
         for box in detected_boxes:
-            # Verifica si el objeto ya está siendo rastreado
-            already_tracked = any(
-                tracker_box is not None and
-                abs(box[0] - tracker_box[0]) < 50 and
-                abs(box[1] - tracker_box[1]) < 50
-                for tracker_box in tracker_boxes
-            )
+            x1, y1, x2, y2 = box
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            
+        # Compara las posiciones detectadas con las posiciones ideales
+        if len(new_positions) == 2:
+            detected_positions = new_positions
+        for i, detected_pos in enumerate(detected_positions):
+            if detected_pos is not None:
+                ideal_pos = ideal_positions[i]
+                distance = np.linalg.norm(np.array(detected_pos) - np.array(ideal_pos))
 
-            if not already_tracked:
-                # Busca un tracker vacío para asignar
-                for i in range(2):
-                    if trackers[i] is None:
-                        trackers[i] = initialize_tracker(frame, box)
-                        tracker_boxes[i] = box
-                        break
+                # Si la distancia entre la posición detectada y la ideal es pequeña, consideramos que la postura es correcta
+                if distance < 50:  # Ajusta este umbral según lo que consideres "cerca"
+                    cv2.putText(frame, f"Mando {i+1}: Correcto", (10, 30 * (i+1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                else:
+                    cv2.putText(frame, f"Mando {i+1}: Incorrecto", (10, 30 * (i+1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
 
         cv2.imshow("picam", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
