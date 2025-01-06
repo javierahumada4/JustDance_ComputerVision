@@ -170,7 +170,7 @@ def is_circle(corners, tolerance=1e-2):
     return True
 
 def is_empty(corners, tolerance=1e-2):
-    if not corners or len(corners) == 0:
+    if len(corners) == 0:
         print("The shape is empty!")
         return True
 
