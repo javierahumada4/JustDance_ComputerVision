@@ -7,19 +7,22 @@ from state_machine import SecurityStateMachine
 
 def main():
     camera = format_camera()
-    max_corners, quality, min_distance, corner_color, radius = 4, 0.1, 7, (255, 0, 255), 5
+    max_corners, quality, min_distance, corner_color, radius = 4, 0.4, 7, (255, 0, 255), 5
     password = read_password()
     state_machine = SecurityStateMachine(password)
     while True:
         frame = camera.capture_array()
-        frame_corners, corners = shi_tomasi_corner_detection(frame, max_corners, quality, min_distance, corner_color, radius)
-        frame_result = state_machine.process_corners(corners)
-        final_frame, result = draw_result(frame_corners, frame_result)
+        final_frame = frame.copy()
         cv2.imshow("picam", final_frame)
         if cv2.waitKey(1) == ord('q'):
             break
-        if result == True:
-            sleep(1)
+        if cv2.waitKey(1) == ord('n'):
+            frame_corners, corners = shi_tomasi_corner_detection(frame, max_corners, quality, min_distance, corner_color, radius)
+            frame_result = state_machine.process_corners(corners)
+            final_frame, result = draw_result(frame_corners, frame_result)
+        cv2.imshow("picam", final_frame)
+        if result == True and cv2.waitKey(1) == ord('f'):
+            print("Access Granted!")
             break
     cv2.destroyAllWindows()
 
@@ -48,7 +51,7 @@ def draw_result(frame, result):
     elif result == 0:
         # Display "NEXT"
         color = (255, 255, 0)  # Cyan
-        cv2.putText(frame, "NEXT", (50, h - 50), font, font_scale, color, thickness)
+        cv2.putText(frame, "Press n for next frame", (50, h - 50), font, font_scale, color, thickness)
 
     elif result == 1:
         # Draw a green tick in the corner
@@ -61,7 +64,7 @@ def draw_result(frame, result):
     elif result == 2:
         # Draw "COMPLETE"
         color = (0, 255, 0)  # Green
-        cv2.putText(frame, "COMPLETE", (50, h - 50), font, font_scale, color, thickness)
+        cv2.putText(frame, "ACCESS GRANTED Press f to continue", (50, h - 50), font, font_scale, color, thickness)
         return frame, True
 
     return frame, False
