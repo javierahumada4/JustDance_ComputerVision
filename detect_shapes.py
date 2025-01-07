@@ -14,7 +14,6 @@ def sort_corners(corners):
 
 def is_square(corners, tolerance=1e-2):
     if len(corners) != 4:
-        print("Not a square: Incorrect number of corners.")
         return False
     
     corners = sort_corners(corners)
@@ -31,7 +30,6 @@ def is_square(corners, tolerance=1e-2):
     ]
 
     if not all(abs(edges[0] - edge) < tolerance for edge in edges):
-        print("Not a square: Edges are not equal.")
         return False
 
     # Calculate angles
@@ -55,15 +53,12 @@ def is_square(corners, tolerance=1e-2):
     ]
 
     if not all(abs(angle - 90) < tolerance for angle in angles):
-        print("Not a square: Angles are not 90 degrees.")
         return False
 
-    print("The shape is a square!")
     return True
 
 def is_rectangle(corners, tolerance=1e-2):
     if len(corners) != 4:
-        print("Not a rectangle: Incorrect number of corners.")
         return False
     corners = sort_corners(corners)
     def calculate_distance(p1, p2):
@@ -77,7 +72,6 @@ def is_rectangle(corners, tolerance=1e-2):
     ]
 
     if not abs(edges[0] - edges[2]) < tolerance or not abs(edges[1] - edges[3]) < tolerance:
-        print("Not a rectangle: Opposite edges are not equal.")
         return False
 
     def calculate_angle(v1, v2):
@@ -100,15 +94,12 @@ def is_rectangle(corners, tolerance=1e-2):
     ]
 
     if not all(abs(angle - 90) < tolerance for angle in angles):
-        print("Not a rectangle: Angles are not 90 degrees.")
         return False
 
-    print("The shape is a rectangle!")
     return True
 
 def is_triangle(corners, tolerance=1e-2):
     if len(corners) != 3:
-        print("Not a triangle: Incorrect number of corners.")
         return False
     corners = sort_corners(corners)
     def calculate_angle(a, b, c):
@@ -125,15 +116,12 @@ def is_triangle(corners, tolerance=1e-2):
     ]
 
     if not abs(sum(angles) - 180) < tolerance:
-        print("Not a triangle: Angles do not sum to 180 degrees.")
         return False
 
-    print("The shape is a triangle!")
     return True
 
 def is_circle(corners, tolerance=1e-2):
     if len(corners) < 3:
-        print("Not a circle: Insufficient number of points.")
         return False
 
     # Calculate the centroid of the points
@@ -144,15 +132,12 @@ def is_circle(corners, tolerance=1e-2):
 
     # Check if all distances are approximately the same
     if not all(abs(distances[0] - distance) < tolerance for distance in distances):
-        print("Not a circle: Points are not equidistant from the center.")
         return False
 
-    print("The shape is a circle!")
     return True
 
 def is_circle(corners, tolerance=1e-2):
     if len(corners) < 3:
-        print("Not a circle: Insufficient number of points.")
         return False
 
     # Calculate the centroid of the points
@@ -163,21 +148,39 @@ def is_circle(corners, tolerance=1e-2):
 
     # Check if all distances are approximately the same
     if not all(abs(distances[0] - distance) < tolerance for distance in distances):
-        print("Not a circle: Points are not equidistant from the center.")
         return False
 
-    print("The shape is a circle!")
     return True
 
 def is_empty(corners, tolerance=1e-2):
     if len(corners) == 0:
-        print("The shape is empty!")
         return True
 
     # Check if all points are degenerate (e.g., all zeros or the same point)
     if all(np.allclose(np.array(corner), 0, atol=tolerance) for corner in corners):
-        print("The shape is empty!")
+        return True
+    
+    functions = [is_triangle, is_square, is_circle]
+    for func in functions:
+        if func(corners, tolerance):
+            break
+    else:
         return True
 
-    print("The shape is not empty.")
     return False
+
+def functions():
+    return {
+        "square": is_square,
+        "rectangle": is_rectangle,
+        "triangle": is_triangle,
+        "circle": is_circle,
+        "empty": is_empty
+    }
+
+def detect_shape(corners, tolerance):
+    for shape, func in functions().items():
+        result = func(corners, tolerance)
+        if result:
+            return shape
+    return "unknown"

@@ -6,7 +6,7 @@ import imageio
 from typing import List
 import glob
 from calibrate import get_paths, load_images, write_image
-from detect_shapes import is_square, is_rectangle, is_triangle, is_circle, is_empty
+from detect_shapes import detect_shape
 def shi_tomasi_corner_detection(image: np.array, maxCorners: int, qualityLevel:float, minDistance: int, corner_color: tuple, radius: int):
     '''
     image - Input image
@@ -50,10 +50,10 @@ def canny_line_detection(img, low_threshold, high_threshold):
 
 if __name__ == "__main__":
     path = dirname(getcwd())
-    path_ = join(path, r"JustDance_ComputerVision-1")
+    path_ = join(path, r"JustDance_ComputerVision")
     paths = get_paths(path_, 4, "Patterns/test")
     images = load_images(paths)
-    max_corners, quality, min_distance, corner_color, radius = 4, 0.1, 7, (255, 0, 255), 5
+    max_corners, quality, min_distance, corner_color, radius = 5, 0.1, 7, (255, 0, 255), 5
     shi_tomasi_resutls = [shi_tomasi_corner_detection(img, max_corners, quality, min_distance, corner_color, radius) for img in images]
     shi_tomasi_corners = [i[1] for i in shi_tomasi_resutls]
     shi_tomasi_images = [i[0] for i in shi_tomasi_resutls]
@@ -75,7 +75,5 @@ if __name__ == "__main__":
     for corner in shi_tomasi_corners:
         print()
         tolerance = 50
-        print(is_square(corner, tolerance))
-        print(is_circle(corner, tolerance))
-        print(is_triangle(corner, tolerance))
-        print(is_empty(corner, tolerance))
+        shape = detect_shape(corner, tolerance)
+        print(shape)
