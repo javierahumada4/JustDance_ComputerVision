@@ -28,7 +28,7 @@ def stream_video():
     # Configurar el VideoWriter para guardar el video
     frame_width = 1280
     frame_height = 720
-    fps = 20  # Estimación inicial; puede ajustarse más tarde si se mide programáticamente
+    fps = 10  # Estimación inicial; puede ajustarse más tarde si se mide programáticamente
     video_writer = cv2.VideoWriter('outputvideo.avi', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
 
     # Variables para calcular FPS
@@ -83,7 +83,7 @@ def stream_video():
                     cv2.putText(frame, f"Mando {i+1}: Incorrecto", (10, 30 * (i+1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         # Mostrar FPS en el cuadro
-        cv2.putText(frame, f"FPS: {int(fps)}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv2.putText(frame, f"FPS: {int(fps)}", (1000, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
         # Escribir el cuadro en el archivo de video
         video_writer.write(frame)
