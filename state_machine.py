@@ -1,4 +1,4 @@
-from detect_shapes import functions
+from detect_shapes import detect_shape
 class SecurityStateMachine:
     def __init__(self, password):
         """
@@ -32,21 +32,18 @@ class SecurityStateMachine:
         :return: True if the current state matches the expected state and the sequence completes, False otherwise.
         """
         # Map state names to corresponding validation functions
-        state_functions = functions()
-
+        shape  = detect_shape(corners)
+        print(shape)
         current_state = self.password[self.current_index]
 
-        if current_state not in state_functions:
-            raise ValueError(f"Invalid state '{current_state}' in password sequence.")
-
         # Stay in the current state if the current shape matches
-        if state_functions[current_state](corners):
+        if shape == current_state:
             return 0  # Don't progress yet; wait for the next state
 
         # Move to the next state if the next shape matches
         if self.current_index < len(self.password) - 1:
             next_state = self.password[self.current_index + 1]
-            if state_functions[next_state](corners):
+            if shape == next_state:
                 self.current_index += 1
                 if self.current_index == len(self.password) - 1:
                     print("Access Granted!")
@@ -54,11 +51,12 @@ class SecurityStateMachine:
                     return 2
                 else:
                     return 1
+            else:
+                print(f"Incorrect shape. Expected: {current_state}.")
+                self.reset()
             return -1
 
         # Reset only if the shape doesn't match current or next state
-        print(f"Incorrect shape. Expected: {current_state}.")
-        self.reset()
         return False
 
 

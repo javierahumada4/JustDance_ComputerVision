@@ -99,7 +99,7 @@ def functions():
         "empty": is_empty
     }
 
-def detect_shape(corners, tolerance):
+def detect_shape(corners, tolerance = 50):
     for shape, func in functions().items():
         result = func(corners, tolerance)
         if result:
