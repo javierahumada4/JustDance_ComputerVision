@@ -31,7 +31,8 @@ def shi_tomasi_corner_detection(image: np.array, maxCorners: int, qualityLevel:f
         qualityLevel=qualityLevel, 
         minDistance=minDistance
     )
-    
+    if corners is None:
+        return image, []
     # Ensure corner coordinates are integers
     corners = np.int0(corners)
     
