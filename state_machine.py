@@ -17,7 +17,7 @@ class SecurityStateMachine:
         :param password: String representing the password (e.g., "t-s-c-t")
         :return: List of states (e.g., ['triangle', 'square', 'empty', 'circle', 'triangle'])
         """
-        mapping = {'t': 'triangle', 's': 'square', 'c': 'circle', '-': 'empty'}
+        mapping = {'t': 'triangle', 'r': "rectangle", '-': 'empty'}
         return [mapping[char] for char in password]
 
     def reset(self):

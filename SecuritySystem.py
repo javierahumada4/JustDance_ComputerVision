@@ -7,7 +7,7 @@ from state_machine import SecurityStateMachine
 
 def main():
     camera = format_camera()
-    max_corners, quality, min_distance, corner_color, radius = 4, 0.5, 7, (255, 0, 255), 5
+    max_corners, quality, min_distance, corner_color, radius = 4, 0.1, 7, (255, 0, 255), 5
     password = read_password()
     state_machine = SecurityStateMachine(password)
     while True:
