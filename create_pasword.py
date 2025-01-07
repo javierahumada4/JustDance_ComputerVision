@@ -10,16 +10,16 @@ def create_password():
 def get_pasword():
     valid = False
     while not valid:
-        password = input("Insert password to create it (ex: t-s-c-t): ")
+        password = input("Insert password to create it (example: t-r-t is triangle then rectangle then triangle): ")
         if len(password)%2 == 0:
             print("Invalid password, the password has to have - in between the letters")
             continue
         for i, letter in enumerate(password):
-            if letter not in "t-sc":
+            if letter not in "t-r":
                 print("Invalid password, some of the letters weren't correct")
                 break
             if letter == "-":
-                if password[i-1] not in "tsc" or password[i + 1] not in "tsc":
+                if password[i-1] not in "tr" or password[i + 1] not in "tr":
                     print("Invalid password, the password has to have - in between the letters")
                     break
         else:

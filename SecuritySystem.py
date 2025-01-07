@@ -7,7 +7,6 @@ from state_machine import SecurityStateMachine
 
 def main():
     camera = format_camera()
-    fps = 60
     max_corners, quality, min_distance, corner_color, radius = 4, 0.5, 7, (255, 0, 255), 5
     password = read_password()
     state_machine = SecurityStateMachine(password)
@@ -22,7 +21,6 @@ def main():
         if result == True:
             sleep(1)
             break
-        sleep(1//fps)
     cv2.destroyAllWindows()
 
 def draw_result(frame, result):

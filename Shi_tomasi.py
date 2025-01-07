@@ -53,7 +53,7 @@ if __name__ == "__main__":
     path_ = join(path, r"JustDance_ComputerVision")
     paths = get_paths(path_, 4, "Patterns/test")
     images = load_images(paths)
-    max_corners, quality, min_distance, corner_color, radius = 5, 0.1, 7, (255, 0, 255), 5
+    max_corners, quality, min_distance, corner_color, radius = 4, 0.1, 7, (255, 0, 255), 5
     shi_tomasi_resutls = [shi_tomasi_corner_detection(img, max_corners, quality, min_distance, corner_color, radius) for img in images]
     shi_tomasi_corners = [i[1] for i in shi_tomasi_resutls]
     shi_tomasi_images = [i[0] for i in shi_tomasi_resutls]

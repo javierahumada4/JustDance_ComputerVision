@@ -1,4 +1,4 @@
-from detect_shapes import is_triangle, is_square, is_circle, is_empty
+from detect_shapes import functions
 class SecurityStateMachine:
     def __init__(self, password):
         """
@@ -32,12 +32,7 @@ class SecurityStateMachine:
         :return: True if the current state matches the expected state and the sequence completes, False otherwise.
         """
         # Map state names to corresponding validation functions
-        state_functions = {
-            'triangle': is_triangle,
-            'circle': is_circle,
-            'square': is_square,
-            'empty': is_empty
-        }
+        state_functions = functions()
 
         current_state = self.password[self.current_index]
 
