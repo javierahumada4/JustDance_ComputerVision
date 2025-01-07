@@ -6,7 +6,7 @@ import imageio
 from typing import List
 import glob
 from calibrate import get_paths, load_images, write_image
-from detect_shapes import is_square, is_rectangle, is_triangle
+from detect_shapes import is_square, is_rectangle, is_triangle, is_circle, is_empty
 def shi_tomasi_corner_detection(image: np.array, maxCorners: int, qualityLevel:float, minDistance: int, corner_color: tuple, radius: int):
     '''
     image - Input image
@@ -53,8 +53,10 @@ if __name__ == "__main__":
     path_ = join(path, r"JustDance_ComputerVision-1")
     paths = get_paths(path_, 4, "Patterns/test")
     images = load_images(paths)
-    max_corners, quality, min_distance, corner_color, radius = 4, 0.5, 7, (255, 0, 255), 5
-    shi_tomasi_corners = [shi_tomasi_corner_detection(img, max_corners, quality, min_distance, corner_color, radius)[1] for img in images]
+    max_corners, quality, min_distance, corner_color, radius = 4, 0.1, 7, (255, 0, 255), 5
+    shi_tomasi_resutls = [shi_tomasi_corner_detection(img, max_corners, quality, min_distance, corner_color, radius) for img in images]
+    shi_tomasi_corners = [i[1] for i in shi_tomasi_resutls]
+    shi_tomasi_images = [i[0] for i in shi_tomasi_resutls]
     #for i, image in enumerate(shi_tomasi_corners):
     #    write_image(image, join(path_, f"Patterns/shi{i}.png"))
     low, high = 50, 120
@@ -64,14 +66,16 @@ if __name__ == "__main__":
     for i in range(len(canny_images)):
         shi_corner = shi_tomasi_corners[i]
         canny = canny_images[i]
+        shi = shi_tomasi_images[i]
         for corner in shi_corner:
             x, y = corner.ravel()  # Flatten the coordinates
             cv2.circle(canny, (x, y), radius, corner_color, -1)  # Draw filled circle
-        write_image(canny, join(path_, f"Patterns/Total{i}.png"))
+        write_image(shi, join(path_, f"Patterns/shi{i}.png"))
     
     for corner in shi_tomasi_corners:
         print()
         tolerance = 50
         print(is_square(corner, tolerance))
-        print(is_rectangle(corner, tolerance))
+        print(is_circle(corner, tolerance))
         print(is_triangle(corner, tolerance))
+        print(is_empty(corner, tolerance))

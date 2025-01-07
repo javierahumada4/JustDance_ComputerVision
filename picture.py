@@ -30,6 +30,7 @@ if __name__ == "__main__":
     path = dirname(getcwd())
     for i in range(1):
         picture = make_picture(camera)
-        path_ = join(path, f"JustDance_ComputerVision-1/pompon.png")
+        path_ = join(path, f"JustDance_ComputerVision-1/Patterns/test2.png")
         write_image(picture, path_)
+        print(f"Done {i}")
     print("Making photos endeded")
