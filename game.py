@@ -13,7 +13,7 @@ def stream_video():
     # Posición de ejemplo para demostrar el Just Dance
     ideal_positions = [
     (300, 200),  # Posición ideal para el mando 1
-    (600, 200),  # Posición ideal para el mando 2
+    (900, 200),  # Posición ideal para el mando 2
     ]
 
     # Inicializar la cámara
@@ -52,7 +52,6 @@ def stream_video():
         # Dibuja las posiciones ideales en la pantalla (usando círculos rojos)
         for ideal_pos in ideal_positions:
             cv2.circle(frame, ideal_pos, 10, (0, 0, 255), -1)  # Dibuja un círculo rojo en la posición ideal
-            cv2.putText(frame, f"Ideal", (ideal_pos[0] + 15, ideal_pos[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
             
         # Compara las posiciones detectadas con las posiciones ideales
         if len(new_positions) == 2:
