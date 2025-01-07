@@ -1,6 +1,7 @@
 import cv2
 from picamera2 import Picamera2
 import numpy as np
+import time
 
 def stream_video():
     # Rango de colores de los "mandos"
@@ -23,9 +24,23 @@ def stream_video():
     picam.preview_configuration.align()
     picam.configure("preview")
     picam.start()
+    
+    # Configurar el VideoWriter para guardar el video
+    frame_width = 1280
+    frame_height = 720
+    fps = 20  # Estimación inicial; puede ajustarse más tarde si se mide programáticamente
+    video_writer = cv2.VideoWriter('outputvideo.avi', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
+
+    # Variables para calcular FPS
+    prev_time = time.time()
 
     while True:
         frame = picam.capture_array()
+        
+        # Calcular FPS
+        current_time = time.time()
+        fps = 1 / (current_time - prev_time)
+        prev_time = current_time
 
         # Change the image to a color space in which chroma and intensity are separate
         hsv_img = cv2.cvtColor(frame, code=cv2.COLOR_BGR2HSV) 
@@ -43,7 +58,7 @@ def stream_video():
                 x, y, w, h = cv2.boundingRect(contour)
                 detected_boxes.append((x, y, x + w, y + h))
                 new_positions.append((x + w // 2, y + h // 2))
-                
+        
         # Dibuja las cajas alrededor de los objetos
         for box in detected_boxes:
             x1, y1, x2, y2 = box
@@ -67,10 +82,18 @@ def stream_video():
                 else:
                     cv2.putText(frame, f"Mando {i+1}: Incorrecto", (10, 30 * (i+1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
+        # Mostrar FPS en el cuadro
+        cv2.putText(frame, f"FPS: {int(fps)}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+
+        # Escribir el cuadro en el archivo de video
+        video_writer.write(frame)
 
         cv2.imshow("picam", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    
+    # Liberar los recursos
+    video_writer.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
