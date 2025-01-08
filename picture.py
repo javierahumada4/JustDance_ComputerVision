@@ -1,24 +1,13 @@
-from picamera2 import Picamera2
 import cv2
 from os import getcwd
 from os.path import dirname, join
-
-def format_camera():
-    picam = Picamera2()
-    picam.preview_configuration.main.size=(1280, 720)
-    picam.preview_configuration.main.format="RGB888"
-    picam.preview_configuration.align()
-    picam.configure("preview")
-    picam.start()
-
-    return picam
+from utils import format_camera
 
 def make_picture(camera):
     while True:
         frame = camera.capture_array()
         cv2.imshow("picam", frame)
         if cv2.waitKey(1) & 0xFF == ord('s'):
-            #cv2.imwrite(path_, frame)
             break
     return frame
 

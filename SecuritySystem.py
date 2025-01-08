@@ -1,5 +1,5 @@
 from Shi_tomasi import shi_tomasi_corner_detection
-from picture import format_camera
+from utils import format_camera
 import cv2
 from create_pasword import read_password
 from state_machine import SecurityStateMachine

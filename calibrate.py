@@ -3,27 +3,7 @@ import numpy as np
 from os import getcwd
 from os.path import dirname, join
 import copy
-
-def show_image(img):
-    """
-    Displays an image in a window.
-
-    Args:
-        img (numpy.ndarray): The image to be displayed.
-    """
-    cv2.imshow('Image', img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    
-def write_image(img, path):
-    """
-    Writes an image to a specified file path.
-
-    Args:
-        img (numpy.ndarray): The image to be saved.
-        path (str): The file path where the image will be saved.
-    """
-    cv2.imwrite(path, img)
+from utils import write_image
 
 def load_images(filenames: list) -> list:
     """
