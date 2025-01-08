@@ -29,6 +29,17 @@ def format_camera():
 
     return picam
 
+def write_image(img, path):
+    """
+    Writes an image to a file.
+    
+    Args:
+        img (numpy.ndarray): The image to be written.
+        path (str): The path to write the image to.
+    """
+
+    cv2.imwrite(path, img)
+    
 def non_max_suppression(img, theta):
 
     M, N = img.shape
