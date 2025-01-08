@@ -57,12 +57,10 @@ if __name__ == "__main__":
     shi_tomasi_resutls = [shi_tomasi_corner_detection(img, max_corners, quality, min_distance, corner_color, radius) for img in images]
     shi_tomasi_corners = [i[1] for i in shi_tomasi_resutls]
     shi_tomasi_images = [i[0] for i in shi_tomasi_resutls]
-    #for i, image in enumerate(shi_tomasi_corners):
-    #    write_image(image, join(path_, f"Patterns/shi{i}.png"))
+
     low, high = 50, 120
     canny_images = [canny_line_detection(img, low, high) for img in images]
-    #for i, image in enumerate(canny_images):
-     #   write_image(image, join(path_, f"Patterns/canny{i}.png"))
+
     for i in range(len(canny_images)):
         shi_corner = shi_tomasi_corners[i]
         canny = canny_images[i]
@@ -73,7 +71,6 @@ if __name__ == "__main__":
         write_image(shi, join(path_, f"Patterns/shi{i}.png"))
     
     for corner in shi_tomasi_corners:
-        print()
         tolerance = 50
         shape = detect_shape(corner, tolerance)
         print(shape)
