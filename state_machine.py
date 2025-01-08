@@ -37,7 +37,7 @@ class SecurityStateMachine:
 
         # Stay in the current state if the current shape matches
         if shape == current_state:
-            return 0  # Don't progress yet; wait for the next state
+            return 0, shape  # Don't progress yet; wait for the next state
 
         # Move to the next state if the next shape matches
         if self.current_index < len(self.password) - 1:

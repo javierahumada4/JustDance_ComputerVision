@@ -1,4 +1,4 @@
-class CaesarCipher:
+class CaesarCypher:
     def __init__(self, step):
         """
         Initializes the CaesarCipher with a specific step.

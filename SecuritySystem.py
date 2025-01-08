@@ -9,7 +9,8 @@ def main():
     max_corners, quality, min_distance, corner_color, radius = 7, 0.2, 7, (255, 0, 255), 5
     password = read_password()
     state_machine = SecurityStateMachine(password)
-    frame_result = 0
+    result = False
+    frame_result = 0, "empty"
 
     while True:
         frame = camera.capture_array()
@@ -40,7 +41,7 @@ def draw_result(frame, result):
     result, shape = result
 
     # Write the detected shape in the top-right corner
-    cv2.putText(frame, f"Got: {shape}", (w - 100, 50), font, font_scale, color, thickness)
+    cv2.putText(frame, f"Got: {shape}", (w - 200, 50), font, font_scale, color, thickness)
 
     if result == -1:
         # Draw a red 'X' in the corner
