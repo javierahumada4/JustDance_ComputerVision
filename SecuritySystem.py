@@ -12,6 +12,11 @@ def main():
     result = False
     frame_result = 0, "empty"
 
+    frame_width = 1280
+    frame_height = 720
+    fps = 10  # Estimación inicial; puede ajustarse más tarde si se mide programáticamente
+    video_writer = cv2.VideoWriter('SecuritySystemDemo.avi', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
+
     while True:
         frame = camera.capture_array()
         frame_corners, corners = shi_tomasi_corner_detection(frame, max_corners, quality, min_distance, corner_color, radius)
@@ -22,7 +27,8 @@ def main():
             break
         final_frame, result = draw_result(frame_corners, frame_result)
         cv2.imshow("picam", final_frame)
-
+        video_writer.write(final_frame)
+    video_writer.release()
     cv2.destroyAllWindows()
 
 def draw_result(frame, result):
