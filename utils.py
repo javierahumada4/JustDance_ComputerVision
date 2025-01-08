@@ -1,5 +1,33 @@
 import numpy as np
 import cv2
+from picamera2 import Picamera2
+
+# Complete the method, use every argument    
+def show_image(img: np.array, title: str = "Image"):
+    """
+    Displays an image in a window.
+
+    Args:
+        img (numpy.ndarray): The image to be displayed.
+    """
+    cv2.imshow(title, img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+def show_image(img):
+
+    cv2.imshow('Image', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def format_camera():
+    picam = Picamera2()
+    picam.preview_configuration.main.size=(1280, 720)
+    picam.preview_configuration.main.format="RGB888"
+    picam.preview_configuration.align()
+    picam.configure("preview")
+    picam.start()
+
+    return picam
 
 def non_max_suppression(img, theta):
 

@@ -1,8 +1,7 @@
 import cv2
-from picamera2 import Picamera2
 import numpy as np
 import time
-
+from utils import format_camera
 def stream_video():
     # Rango de colores de los "mandos"
     light_orange = (10, 25, 60)
@@ -18,12 +17,7 @@ def stream_video():
     ]
 
     # Inicializar la cámara
-    picam = Picamera2()
-    picam.preview_configuration.main.size=(1280, 720)
-    picam.preview_configuration.main.format="RGB888"
-    picam.preview_configuration.align()
-    picam.configure("preview")
-    picam.start()
+    picam = format_camera()
     
     # Configurar el VideoWriter para guardar el video
     frame_width = 1280

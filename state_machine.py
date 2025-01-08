@@ -33,7 +33,6 @@ class SecurityStateMachine:
         """
         # Map state names to corresponding validation functions
         shape  = detect_shape(corners)
-        print(shape)
         current_state = self.password[self.current_index]
 
         # Stay in the current state if the current shape matches
@@ -46,22 +45,13 @@ class SecurityStateMachine:
             if shape == next_state:
                 self.current_index += 1
                 if self.current_index == len(self.password) - 1:
-                    print("Access Granted!")
                     self.reset()
-                    return 2
+                    return 2, shape
                 else:
-                    return 1
+                    return 1, shape
             else:
-                print(f"Incorrect shape. Expected: {current_state}.")
                 self.reset()
-            return -1
-
-        # Reset only if the shape doesn't match current or next state
-        return False
-
-
-
-
+            return -1, shape
 
 if __name__ == "__main__":
     # Example usage:
