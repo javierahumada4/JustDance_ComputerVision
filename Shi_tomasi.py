@@ -43,11 +43,6 @@ def shi_tomasi_corner_detection(image: np.array, maxCorners: int, qualityLevel:f
     
     return image, corners
 
-def canny_line_detection(img, low_threshold, high_threshold):
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    edge_img = cv2.Canny(gray_img, low_threshold, high_threshold)
-    return edge_img
-
 if __name__ == "__main__":
     path = dirname(getcwd())
     path_ = join(path, r"JustDance_ComputerVision")
@@ -58,16 +53,9 @@ if __name__ == "__main__":
     shi_tomasi_corners = [i[1] for i in shi_tomasi_resutls]
     shi_tomasi_images = [i[0] for i in shi_tomasi_resutls]
 
-    low, high = 50, 120
-    canny_images = [canny_line_detection(img, low, high) for img in images]
-
-    for i in range(len(canny_images)):
+    for i in range(len(shi_tomasi_corners)):
         shi_corner = shi_tomasi_corners[i]
-        canny = canny_images[i]
         shi = shi_tomasi_images[i]
-        for corner in shi_corner:
-            x, y = corner.ravel()  # Flatten the coordinates
-            cv2.circle(canny, (x, y), radius, corner_color, -1)  # Draw filled circle
         write_image(shi, join(path_, f"Patterns/shi{i}.png"))
     
     for corner in shi_tomasi_corners:
